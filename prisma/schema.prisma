@@ -50,7 +50,7 @@ model User {
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @default(now()) @map(name: "updated_at")
   teamId        Int?
-  accountId     Int?
+  tenantId      Int?
   settings      Json?     @default("{}")
 
   @@map(name: "users")
@@ -79,12 +79,11 @@ model Absence {
   fromDate      DateTime
   toDate        DateTime
   note          String?
-  files         String[]?
+  files         String?
   approveHash   String
   approved      Approved  @default(WAITING)
   approvedAt    DateTime?
   disabled      Boolean   @default(false)
-  type          Type      @relation(fields: [typeId], references: [id])
   typeId        Int
 
   // DATES 
@@ -102,11 +101,12 @@ enum Approved {
   DENIED
 }
 
-model Type {
+model LeaveType {
   id            Int       @default(autoincrement()) @id
   name          String
 }
 
+// Leader of Team
 model Manager {
   id            Int       @default(autoincrement()) @id
   name          String
@@ -114,28 +114,32 @@ model Manager {
   image         String?
 }
 
+// Teams within Company
 model Team {
   id            Int       @default(autoincrement()) @id
   name          String
   email         String?   @unique
   managerId     Int?
+  tenantId      Int?
 }
 
-model Account {
+// Company
+model Tenant {
   id            Int       @default(autoincrement()) @id
   name          String
 }
 
+// Company-to-User (many-to-many)
 model Membership {
   id            Int       @default(autoincrement()) @id
   name          String?
-  accountId     Int 
+  tenantId     Int
   userId        Int 
 }
 
 model Setting {
   id            Int       @default(autoincrement()) @id
-  accountId     Int?
+  tenantId     Int?
   userId        Int?
   key           String?
   value         String?
