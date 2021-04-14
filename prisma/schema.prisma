@@ -1,0 +1,142 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+// NEXTAUTH
+
+model Account {
+  id                 Int       @default(autoincrement()) @id
+  compoundId         String    @unique @map(name: "compound_id")
+  userId             Int       @map(name: "user_id")
+  providerType       String    @map(name: "provider_type")
+  providerId         String    @map(name: "provider_id")
+  providerAccountId  String    @map(name: "provider_account_id")
+  refreshToken       String?   @map(name: "refresh_token")
+  accessToken        String?   @map(name: "access_token")
+  accessTokenExpires DateTime? @map(name: "access_token_expires")
+  createdAt          DateTime  @default(now()) @map(name: "created_at")
+  updatedAt          DateTime  @default(now()) @map(name: "updated_at")
+
+  @@index([providerAccountId], name: "providerAccountId")
+  @@index([providerId], name: "providerId")
+  @@index([userId], name: "userId")
+
+  @@map(name: "accounts")
+}
+
+model Session {
+  id           Int      @default(autoincrement()) @id
+  userId       Int      @map(name: "user_id")
+  expires      DateTime
+  sessionToken String   @unique @map(name: "session_token")
+  accessToken  String   @unique @map(name: "access_token")
+  createdAt    DateTime @default(now()) @map(name: "created_at")
+  updatedAt    DateTime @default(now()) @map(name: "updated_at")
+
+  @@map(name: "sessions")
+}
+
+model User {
+  id            Int       @default(autoincrement()) @id
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime? @map(name: "email_verified")
+  image         String?
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @default(now()) @map(name: "updated_at")
+  teamId        Int?
+  accountId     Int?
+  settings      Json?     @default("{}")
+
+  @@map(name: "users")
+}
+
+model VerificationRequest {
+  id         Int      @default(autoincrement()) @id
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  createdAt  DateTime  @default(now()) @map(name: "created_at")
+  updatedAt  DateTime  @default(now()) @map(name: "updated_at")
+
+  @@map(name: "verification_requests")
+}
+
+// FREIZEITLY
+
+model Absence {
+  id            Int       @default(autoincrement()) @id
+  userId        Int
+  managerId     Int
+  createdBy     Int
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now())
+  fromDate      DateTime
+  toDate        DateTime
+  note          String?
+  files         String[]?
+  approveHash   String
+  approved      Approved  @default(WAITING)
+  approvedAt    DateTime?
+  disabled      Boolean   @default(false)
+  type          Type      @relation(fields: [typeId], references: [id])
+  typeId        Int
+
+  // DATES 
+  daysRemainingLastYear Float
+  daysEarnedThisYear    Float
+  daysSpentThisYear     Float
+  daysAvailable         Float
+  daysRequested         Float
+  daysRemainingThisYear Float
+}
+
+enum Approved {
+  WAITING
+  APPROVED
+  DENIED
+}
+
+model Type {
+  id            Int       @default(autoincrement()) @id
+  name          String
+}
+
+model Manager {
+  id            Int       @default(autoincrement()) @id
+  name          String
+  email         String?   @unique
+  image         String?
+}
+
+model Team {
+  id            Int       @default(autoincrement()) @id
+  name          String
+  email         String?   @unique
+  managerId     Int?
+}
+
+model Account {
+  id            Int       @default(autoincrement()) @id
+  name          String
+}
+
+model Membership {
+  id            Int       @default(autoincrement()) @id
+  name          String?
+  accountId     Int 
+  userId        Int 
+}
+
+model Setting {
+  id            Int       @default(autoincrement()) @id
+  accountId     Int?
+  userId        Int?
+  key           String?
+  value         String?
+}
