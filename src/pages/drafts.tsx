@@ -1,8 +1,8 @@
-import Layout from "../components/Layout"
-import Link from "next/link"
-import { withApollo } from "../apollo/client"
-import gql from "graphql-tag"
-import { useQuery } from "@apollo/react-hooks"
+import Layout from "../components/Layout";
+import Link from "next/link";
+import { withApollo } from "../apollo/client";
+import gql from "graphql-tag";
+import { useQuery } from "@apollo/react-hooks";
 
 const DraftsQuery = gql`
   query DraftsQuery {
@@ -17,7 +17,7 @@ const DraftsQuery = gql`
       }
     }
   }
-`
+`;
 
 const Post = ({ post }) => (
   <Link href="/p/[id]" as={`/p/${post.id}`}>
@@ -35,16 +35,16 @@ const Post = ({ post }) => (
       `}</style>
     </a>
   </Link>
-)
+);
 
 const Drafts = () => {
-  const { loading, error, data } = useQuery(DraftsQuery)
+  const { loading, error, data } = useQuery(DraftsQuery);
 
   if (loading) {
-    return <div>Loading ...</div>
+    return <div>Loading ...</div>;
   }
   if (error) {
-    return <div>Error: {error.message}</div>
+    return <div>Error: {error.message}</div>;
   }
 
   return (
@@ -74,7 +74,7 @@ const Drafts = () => {
         }
       `}</style>
     </Layout>
-  )
-}
+  );
+};
 
-export default withApollo(Drafts)
+export default withApollo(Drafts);

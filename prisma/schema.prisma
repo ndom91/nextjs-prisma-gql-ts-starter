@@ -123,7 +123,7 @@ model Team {
   tenantId      Int?
 }
 
-// Company
+// Tenant / Company
 model Tenant {
   id            Int       @default(autoincrement()) @id
   name          String
