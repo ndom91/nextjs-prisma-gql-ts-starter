@@ -5,7 +5,8 @@
   "scripts": {
     "build": "next build",
     "start": "next start",
-    "dev": "concurrently -r \"npx next -p 3002\" \"npx graphql-codegen --watch\""
+    "dev": "concurrently -r \"npx next -p 3002\" \"npx graphql-codegen --watch\"",
+    "postinstall": "npx prisma generate"
   },
   "keywords": [
     "HR",
@@ -25,9 +26,7 @@
     "nexus": "1.0.0",
     "nexus-plugin-prisma": "^0.34.1",
     "react": "17.0.2",
-    "react-apollo": "3.1.5",
     "react-dom": "17.0.2",
-    "react-markdown": "5.0.3",
     "urql": "^2.0.2"
   },
   "devDependencies": {

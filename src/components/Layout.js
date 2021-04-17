@@ -1,8 +1,5 @@
-import Header from './Header'
-
-const Layout = props => (
+const Layout = (props) => (
   <div>
-    <Header />
     <div className="layout">{props.children}</div>
     <style jsx global>{`
       html {
