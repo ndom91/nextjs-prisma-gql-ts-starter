@@ -1,18 +1,14 @@
 {
-  "name": "freizeitly",
-  "version": "0.1.0",
-  "description": "Making Timeoff Easy!",
+  "name": "nextjs-prisma-typescript",
+  "version": "0.0.1",
+  "description": "",
   "scripts": {
     "build": "next build",
     "start": "next start",
     "dev": "concurrently -r \"npx next -p 3002\" \"npx graphql-codegen --watch\"",
     "postinstall": "npx prisma generate"
   },
-  "keywords": [
-    "HR",
-    "Timeoff",
-    "Vacation"
-  ],
+  "keywords": [],
   "author": "Nico Domino <yo@ndo.dev>",
   "license": "MIT",
   "dependencies": {
@@ -43,7 +39,6 @@
   },
   "prettier": {
     "semi": false,
-    "printWidth": 80,
     "singleQuote": true
   }
 }
